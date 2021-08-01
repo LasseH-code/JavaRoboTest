@@ -1,4 +1,4 @@
-package textConverter;
+package textConverter.utils.specializedTypes;
 
 public enum Action {
     MOVE_N,

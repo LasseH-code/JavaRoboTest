@@ -1,5 +1,7 @@
 package textConverter.image;
 
+import textConverter.utils.Pixel;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;

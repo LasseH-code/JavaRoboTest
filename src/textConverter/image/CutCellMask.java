@@ -24,11 +24,13 @@ public class CutCellMask {
     }
 
     public void calculate(Vector2 b) {
-        initCut();
+        if (cut == null) {
+            initCut();
+        }
 
-        Point2D dist = b.get_distance();
-        for (int i = 0; i < dist.x; i++) {
-            for (int j = 0; j < dist.y; j++) {
+        //Point2D dist = b.get_distance();
+        for (int i = b.p1.y; i <= b.p2.y; i++) {
+            for (int j = b.p1.x; j <= b.p2.x; j++) {
                 cut.value[i][j] = false;
             }
         }

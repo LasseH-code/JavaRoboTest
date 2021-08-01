@@ -16,4 +16,8 @@ public class Vector2 {
         b = b < 0 ? -b : b;
         return new Point2D(a, b);
     }
+
+    public boolean compare(Vector2 v) {
+        return p1.x == v.p1.x && p1.y == v.p1.y && p2.x == v.p2.x && p2.y == v.p2.y;
+    }
 }

@@ -1,7 +1,6 @@
 package textConverter.image;
 
-import java.util.ArrayList;
-import java.util.List;
+import textConverter.utils.specializedTypes.CellType;
 
 public class CellMask {
     public boolean[][] value;

@@ -1,4 +1,4 @@
-package textConverter.image;
+package textConverter.utils.specializedTypes;
 
 public enum CellType {
     NONE,

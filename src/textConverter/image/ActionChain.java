@@ -1,6 +1,8 @@
-package textConverter;
+package textConverter.image;
 
 import textConverter.tools.ListToArray;
+import textConverter.utils.specializedTypes.Action;
+import textConverter.utils.specializedTypes.CharPoint2D;
 
 import java.util.ArrayList;
 import java.util.List;

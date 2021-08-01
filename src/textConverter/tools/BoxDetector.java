@@ -2,7 +2,7 @@ package textConverter.tools;
 
 import textConverter.image.CellMask;
 import textConverter.image.CutCellMask;
-import textConverter.utils.Box;
+import textConverter.utils.specializedTypes.Box;
 import textConverter.utils.Point2D;
 import textConverter.utils.Vector2;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoxDetector {
-    protected CellMask source;
+    public CellMask source;
     private CutCellMask wipSource;
     public Box[] boxes;
     private List<Box> boxes1 = new ArrayList<>();
@@ -56,10 +56,10 @@ public class BoxDetector {
     }
 
     private Box floorDetection(Box b) {
-        Vector2 bottom = new Vector2();
-        bottom.p1 = new Point2D(b.left.p2);
+        /*Vector2 bottom = new Vector2();
+        /*bottom.p1 = new Point2D(b.left.p2);
         bottom.p2 = new Point2D(b.left.p2);
-        for (int i = b.left.p2.x; i < wipSource.cut.value[b.left.p2.y].length; i++) {
+        /*for (int i = b.left.p2.x; i < wipSource.cut.value[b.left.p2.y].length; i++) {
             if (wipSource.cut.value[b.left.p2.y][i] && bottom.p2.x <= i) {
                 bottom.p2.x = i;
             } else {
@@ -71,6 +71,13 @@ public class BoxDetector {
         } else {
             System.err.println("FloorDetection failed");
             return b;
+        }*/
+        if (b.left.p2.y == b.right.p2.y) {
+            return new Box(b.top, b.left, b.right, new Vector2(new Point2D(b.left.p2.x, b.left.p2.y), new Point2D(b.right.p2.x, b.right.p2.y)));
+
+        } else {
+            System.err.println("FloorDetection failed");
+            return b;
         }
     }
 
@@ -79,7 +86,7 @@ public class BoxDetector {
         Vector2 r = new Vector2();
         l.p1 = new Point2D(b.top.p1);
         l.p2 = new Point2D(b.top.p1);
-        for (int i = b.top.p1.y; i < wipSource.cut.value.length; i++) {
+        for (int i = b.top.p1.inverse(Point2D.axis.X); i < wipSource.cut.value.length; i++) {
             if(wipSource.cut.value[i][b.top.p1.x] && i >= l.p2.y) {
                 l.p2.y = i;
             } else {
@@ -88,7 +95,7 @@ public class BoxDetector {
         }
         r.p1 = new Point2D(b.top.p2);
         r.p2 = new Point2D(b.top.p2);
-        for (int i = b.top.p2.y; i < wipSource.cut.value.length; i++) {
+        for (int i = b.top.p2.inverse(Point2D.axis.X); i < wipSource.cut.value.length; i++) {
             if(wipSource.cut.value[i][b.top.p2.x] && i >= r.p2.y) {
                 r.p2.y = i;
             } else {
@@ -117,12 +124,12 @@ public class BoxDetector {
                 if (wipSource.cut.value[i][j]) {
                     if (first) {
                         boxes1.add(new Box());
-                        boxes1.get(boxes1.size()-1).top.p1 = new Point2D(i, j);
-                        boxes1.get(boxes1.size()-1).top.p2 = new Point2D(i, j);
+                        boxes1.get(boxes1.size()-1).top.p1 = new Point2D(j, i);
+                        boxes1.get(boxes1.size()-1).top.p2 = new Point2D(j, i);
                         first = false;
                     } else {
-                        boxes1.get(boxes1.size()-1).top.p2.y = i > boxes1.get(boxes1.size()-1).top.p2.y ? i : boxes1.get(boxes1.size()-1).top.p2.y;
-                        boxes1.get(boxes1.size()-1).top.p2.x = j > boxes1.get(boxes1.size()-1).top.p2.x ? j : boxes1.get(boxes1.size()-1).top.p2.x;
+                        boxes1.get(boxes1.size()-1).top.p2.x = j; // > boxes1.get(boxes1.size()-1).top.p2.y ? i : boxes1.get(boxes1.size()-1).top.p2.y;
+                        //boxes1.get(boxes1.size()-1).top.p2.x = j > boxes1.get(boxes1.size()-1).top.p2.x ? j : boxes1.get(boxes1.size()-1).top.p2.x;
                     }
                 } else if(!first) {
                     break;
@@ -133,15 +140,19 @@ public class BoxDetector {
                 boxes1.get(boxes1.size()-1).fill(floorDetection(boxes1.get(boxes1.size()-1)));
                 first = true;
 
-                jOffset += new Vector2(new Point2D(boxes1.get(boxes1.size()-1).bottom.p1), new Point2D(boxes1.get(boxes1.size()-1).top.p1)).get_distance().y;
+                //jOffset += new Vector2(new Point2D(boxes1.get(boxes1.size()-1).bottom.p1), new Point2D(boxes1.get(boxes1.size()-1).top.p1)).get_distance().y;
                 //jOffset += boxes1.get(boxes1.size()-1).bottom.p1.y - boxes1.get(boxes1.size()-1).top.p1.y;
 
                 wipSource.calculate(new Vector2(new Point2D(boxes1.get(boxes1.size()-1).top.p1), new Point2D(boxes1.get(boxes1.size()-1).bottom.p2)));
-                i = 0;
+                i = -1;
                 //break;
             }
+            /*if (i == wipSource.cut.value.length-1) {
+                break;
+            }*/
         }
         ListToArray<Box> ltr = new ListToArray<>();
         boxes = ltr.listToArray(Box.class, boxes1);
+        System.out.println("Box Found!");
     }
 }

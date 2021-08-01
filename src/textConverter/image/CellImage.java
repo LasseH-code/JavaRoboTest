@@ -1,5 +1,8 @@
 package textConverter.image;
 
+import textConverter.utils.specializedTypes.CellType;
+import textConverter.utils.Pixel;
+
 import java.util.ArrayList;
 import java.util.List;
 

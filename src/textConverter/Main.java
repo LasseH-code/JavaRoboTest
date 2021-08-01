@@ -1,13 +1,13 @@
 package textConverter;
 
 import textConverter.image.*;
-import textConverter.image.CellImage;
+
 import textConverter.tools.*;
+import textConverter.utils.specializedTypes.CellType;
+import textConverter.utils.Pixel;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static final boolean[][] charA = {
@@ -36,7 +36,7 @@ public class Main {
 
 
         FontReader fr = new FontReader();
-        Pixel[][] pixels = fr.readImage(new File("D:\\dev\\Robi\\Test\\src\\textConverter\\image\\A.png"));
+        Pixel[][] pixels = fr.readImage(new File("F:\\dev\\JavaRoboTest\\src\\textConverter\\image\\TestFont_Compressed.png"));
         String[][] colorVal = new String[pixels.length][pixels[0].length];
         for (int i = 0; i < pixels.length; i++) {
             for (int j = 0; j < pixels[i].length; j++) {
@@ -72,41 +72,45 @@ public class Main {
         //cCM.calculate();
         BoxDetector bd = new BoxDetector(cMsk, 0);
         bd.calculate();
-        String[][] bdVal = {
-                {
-                    "TOP",
-                    String.valueOf(bd.boxes[0].top.p1.x),
-                    String.valueOf(bd.boxes[0].top.p1.y),
-                    "<-p1 p2->",
-                    String.valueOf(bd.boxes[0].top.p2.x),
-                    String.valueOf(bd.boxes[0].top.p2.y)
-                },
-                {
-                    "LEFT",
-                    String.valueOf(bd.boxes[0].left.p1.x),
-                    String.valueOf(bd.boxes[0].left.p1.y),
-                    "<-p1 p2->",
-                    String.valueOf(bd.boxes[0].left.p2.x),
-                    String.valueOf(bd.boxes[0].left.p2.y)
-                },
-                {
-                    "RIGHT",
-                    String.valueOf(bd.boxes[0].right.p1.x),
-                    String.valueOf(bd.boxes[0].right.p1.y),
-                    "<-p1 p2->",
-                    String.valueOf(bd.boxes[0].right.p2.x),
-                    String.valueOf(bd.boxes[0].right.p2.y)
-                },
-                {
-                    "BOTTOM",
-                    String.valueOf(bd.boxes[0].bottom.p1.x),
-                    String.valueOf(bd.boxes[0].bottom.p1.y),
-                    "<-p1 p2->",
-                    String.valueOf(bd.boxes[0].bottom.p2.x),
-                    String.valueOf(bd.boxes[0].bottom.p2.y)
-                },
-        };
-        pr.printMatrixWithEvenSpacing(bdVal, Printer.AutoCalcType.ONCE);
+        for (int i = 0; i < bd.boxes.length; i++) {
+            String[][] bdVal = {
+                    {
+                            "TOP",
+                            String.valueOf(bd.boxes[i].top.p1.x),
+                            String.valueOf(bd.boxes[i].top.p1.y),
+                            "<-p1 p2->",
+                            String.valueOf(bd.boxes[i].top.p2.x),
+                            String.valueOf(bd.boxes[i].top.p2.y)
+                    },
+                    {
+                            "LEFT",
+                            String.valueOf(bd.boxes[i].left.p1.x),
+                            String.valueOf(bd.boxes[i].left.p1.y),
+                            "<-p1 p2->",
+                            String.valueOf(bd.boxes[i].left.p2.x),
+                            String.valueOf(bd.boxes[i].left.p2.y)
+                    },
+                    {
+                            "RIGHT",
+                            String.valueOf(bd.boxes[i].right.p1.x),
+                            String.valueOf(bd.boxes[i].right.p1.y),
+                            "<-p1 p2->",
+                            String.valueOf(bd.boxes[i].right.p2.x),
+                            String.valueOf(bd.boxes[i].right.p2.y)
+                    },
+                    {
+                            "BOTTOM",
+                            String.valueOf(bd.boxes[i].bottom.p1.x),
+                            String.valueOf(bd.boxes[i].bottom.p1.y),
+                            "<-p1 p2->",
+                            String.valueOf(bd.boxes[i].bottom.p2.x),
+                            String.valueOf(bd.boxes[i].bottom.p2.y)
+                    },
+            };
+            pr.printMatrixWithEvenSpacing(bdVal, Printer.AutoCalcType.ONCE);
+            System.out.println();
+        }
+        //while (true);
     }
 }
 

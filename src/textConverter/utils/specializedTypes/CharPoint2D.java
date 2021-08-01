@@ -1,11 +1,11 @@
-package textConverter;
+package textConverter.utils.specializedTypes;
 
 import textConverter.utils.Point2D;
 
 import java.util.List;
 
 public class CharPoint2D extends Point2D {
-    CharPoint2D() {
+    public CharPoint2D() {
         x = 0;
     }
 

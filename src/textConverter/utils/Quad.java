@@ -9,5 +9,5 @@ public class Quad {
     public Point2D bottomR;
 
     public Quad() {}
-    public Quad(Point2D tl, Point2D tr, Point2D bl, Point2D br) { topL.fill(tl); topR.fill(tr); bottomL.fill(bl); bottomR.fill(br); }
+    public Quad(Point2D tl, Point2D tr, Point2D bl, Point2D br) { topL = new Point2D(tl); topR = new Point2D(tr); bottomL = new Point2D(bl); bottomR = new Point2D(br); }
 }

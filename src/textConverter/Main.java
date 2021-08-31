@@ -2,28 +2,35 @@ package textConverter;
 
 import textConverter.image.*;
 
+import textConverter.roboChar.ActionChain;
+import textConverter.roboChar.InstructedChar;
+import textConverter.roboChar.InstructedFont;
 import textConverter.tools.*;
+import textConverter.utils.specializedTypes.Action;
+import textConverter.utils.specializedTypes.Alphabet;
 import textConverter.utils.specializedTypes.CellType;
 import textConverter.utils.Pixel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static final boolean[][] charA = {
-            {false, true,   true,   false,  false},
-            {true,  false,  false,  true,   false},
-            {true,  true,   true,   true,   false},
-            {true,  false,  false,  true,   false},
-            {true,  false,  false,  true,   false},
-            {false, false,  false,  false,  false}
+            {false, true,   true,   false},
+            {true,  false,  false,  true},
+            {true,  true,   true,   true},
+            {true,  false,  false,  true},
+            {true,  false,  false,  true},
+            {false, false,  false,  false}
     };
 
     public static void main(String[] args) throws IOException {
-        /*ActionChain ac = new ActionChain();
-        Action[] chain = ac.createActionChain(charA);*/
+        ActionChain ac = new ActionChain();
+        Action[] chain = ac.createActionChain(charA);
         Printer pr = new Printer();
-        /*pr.lineBreakThreshold = charA[0].length;
+        pr.lineBreakThreshold = charA[0].length;
         ListToArray<String> ltr = new ListToArray<String>();
         List<String> chainList = new ArrayList<String>();
         for (int i = 0; i < chain.length; i++) {
@@ -32,9 +39,9 @@ public class Main {
         String[] strChain = pr.listToArray(chainList);
         pr.autoConfigurePrinter(strChain);
         pr.printArrayWithEvenSpacing(strChain);
-        System.out.println();*/
+        System.out.println();
 
-
+        ///*
         FontReader fr = new FontReader();
         Pixel[][] pixels = fr.readImage(new File("F:\\dev\\JavaRoboTest\\src\\textConverter\\image\\TestFont_Compressed.png"));
         String[][] colorVal = new String[pixels.length][pixels[0].length];
@@ -72,6 +79,7 @@ public class Main {
         //cCM.calculate();
         BoxDetector bd = new BoxDetector(cMsk, 0);
         bd.calculate();
+        bd.quadify(false);
         for (int i = 0; i < bd.boxes.length; i++) {
             String[][] bdVal = {
                     {
@@ -111,6 +119,21 @@ public class Main {
             System.out.println();
         }
         //while (true);
+
+        cMsk.maskType = CellType.ACTIVE;
+        cMsk.refreshCMask();
+        InstructedFont inF = new InstructedFont(bd.boxes, cMsk);
+        for(Alphabet a : Alphabet.values()) {
+            InstructedChar iChr = inF.search(a);
+            Action[] tempA = iChr.actions;
+            String[] tempS = new String[tempA.length];
+            for (int j = 0; j < tempA.length; j++) {
+                tempS[j] = String.valueOf(tempA[j]);
+            }
+            System.out.println("'" + String.valueOf(iChr.alias) + "': ");
+            pr.printArrayWithEvenSpacing(tempS);
+        }
+        // */
     }
 }
 

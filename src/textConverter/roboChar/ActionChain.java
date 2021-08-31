@@ -1,4 +1,4 @@
-package textConverter.image;
+package textConverter.roboChar;
 
 import textConverter.tools.ListToArray;
 import textConverter.utils.specializedTypes.Action;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActionChain {
-    private boolean builtFlag = false;
 
     public Action[] createActionChain(boolean[][] inChr) {
         CharPoint2D pos = new CharPoint2D();
@@ -24,11 +23,16 @@ public class ActionChain {
                     temp.add(Action.PLACE_BLOCK);
                 }
             }
+            if (1 == inChr[i].length && inChr[i][pos.x]) {
+                temp.add(Action.PLACE_BLOCK);
+            }
             if (i+1 != inChr.length) {
                 pos.y++;
             }
             temp = pos.xToZero(temp);
-            temp.add(Action.MOVE_S);
+            if (i < inChr.length-1) {
+                temp.add(Action.MOVE_S);
+            }
         }
         temp = pos.yToZero(temp);
 

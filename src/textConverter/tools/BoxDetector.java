@@ -14,7 +14,7 @@ public class BoxDetector {
     private CutCellMask wipSource;
     public Box[] boxes;
     private List<Box> boxes1 = new ArrayList<>();
-    public int offset = 1;
+    public int offset = 0;
 
     public BoxDetector() {}
     public BoxDetector(BoxDetector bd) { source = bd.source; wipSource = bd.wipSource; boxes = bd.boxes; boxes1 = bd.boxes1; offset = bd.offset; }
@@ -53,6 +53,21 @@ public class BoxDetector {
     public void setupAndCalculate(CellMask cMsk, Box[] p, int o) {
         setup(cMsk, p, o);
         calculate();
+    }
+
+    public void quadify(boolean safety) {
+        for (int i = 0; i < boxes.length; i++) {
+            boxes[i].fillQuad(safety);
+        }
+    }
+
+    private Box applyOffset(Box b) {
+        Vector2 to = new Vector2(new Point2D(b.top.p1.x+offset, b.top.p1.y+offset), new Point2D(b.top.p2.x-offset, b.top.p2.y+offset));
+        Vector2 le = new Vector2(new Point2D(b.left.p1.x+offset, b.left.p1.y+offset), new Point2D(b.left.p2.x+offset, b.left.p2.y-offset));
+        Vector2 ri = new Vector2(new Point2D(b.right.p1.x-offset, b.right.p1.y+offset), new Point2D(b.right.p2.x-offset, b.right.p2.y-offset));
+        Vector2 bo = new Vector2(new Point2D(b.bottom.p1.x+offset, b.bottom.p1.y-offset), new Point2D(b.bottom.p2.x-offset, b.bottom.p2.y-offset));
+
+        return new Box(to, le, ri, bo);
     }
 
     private Box floorDetection(Box b) {
@@ -144,6 +159,7 @@ public class BoxDetector {
                 //jOffset += boxes1.get(boxes1.size()-1).bottom.p1.y - boxes1.get(boxes1.size()-1).top.p1.y;
 
                 wipSource.calculate(new Vector2(new Point2D(boxes1.get(boxes1.size()-1).top.p1), new Point2D(boxes1.get(boxes1.size()-1).bottom.p2)));
+                boxes1.get(boxes1.size()-1).fill(applyOffset(boxes1.get(boxes1.size()-1)));
                 i = -1;
                 //break;
             }

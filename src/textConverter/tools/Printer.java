@@ -53,7 +53,9 @@ public class Printer {
     }
 
     public void printArrayWithEvenSpacing(String[] input) {
+        autoConfigurePrinter(input);
         calculateASpacing();
+        //autoConfigurePrinter(input);
         if (separator) {
             System.out.print("|");
             for (int j = 0; j < offset*spacingFactor; j++) {
